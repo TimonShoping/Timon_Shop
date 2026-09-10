@@ -36,30 +36,32 @@
             transition: all 0.3s ease;
         }
 
-        /* 🎴 Выезжающая боковая шторка (Меню профиля) — Теперь спрятана намертво вглубь */
+         /* 🎴 ИСПРАВЛЕННАЯ АДАПТИВНАЯ БОКОВАЯ ПАНЕЛЬ */
         .sidebar-panel {
             position: fixed;
             top: 0;
-            right: -360px; /* Увеличили отступ, чтобы шторка гарантированно ушла за край экрана и не вылезала! */
-            width: 310px;
+            right: -150%; /* 👇 ТЕПЕРЬ ОНА УЛЕТАЕТ ДАЛЕКО ЗА ЭКРАН И ДАЖЕ НЕ ВИДНА! 👇 */
+            width: 310px; 
+            max-width: 80%; /* Сделали чуть-чуть поуже для идеальной посадки на мелких смартфонах */
             height: 100%;
-            background: rgba(17, 9, 34, 0.96); 
+            background: rgba(17, 9, 34, 0.98);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-left: 1px solid rgba(188, 19, 254, 0.2);
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
-            z-index: 99999; 
-            padding: 25px;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+            z-index: 99999;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            transition: right 0.4s cubic-bezier(0.1, 0.9, 0.2, 1); 
+            transition: right 0.4s cubic-bezier(0.1, 0.9, 0.2, 1);
             text-align: left;
         }
-
-        /* Когда добавляем класс .open, шторка выезжает ровно к краю экрана */
+        
+        /* Класс для открытия (исправлен на проценты) */
         .sidebar-panel.open {
             right: 0;
         }
+        
         .burger-line {
             width: 22px;
             height: 2px;
