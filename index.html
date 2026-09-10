@@ -5,6 +5,167 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timon Shop / Магазин игровых товаров</title>
     <style>
+        
+         /* Круглая кнопка три полоски (Бургер) */
+         /* ☰ Круглая кнопка три полоски (Бургер) — Теперь зафиксирована и движется вместе с экраном */
+        .burger-menu-btn {
+            position: fixed; /* Принудительно приклеиваем кнопку к экрану при прокрутке */
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 10px;
+            background: rgba(17, 9, 34, 0.8); /* Чуть темнее фон, чтобы не сливалась с товарами */
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            z-index: 100000; /* Поднимаем выше кнопок и корзины, чтобы всегда была доступна */
+        }
+        .burger-menu-btn:hover {
+            border-color: #bc13fe;
+            box-shadow: 0 0 10px rgba(188, 19, 254, 0.3);
+        }
+        .burger-line {
+            width: 22px;
+            height: 2px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* 🎴 Выезжающая боковая шторка (Меню профиля) — Теперь спрятана намертво вглубь */
+        .sidebar-panel {
+            position: fixed;
+            top: 0;
+            right: -360px; /* Увеличили отступ, чтобы шторка гарантированно ушла за край экрана и не вылезала! */
+            width: 310px;
+            height: 100%;
+            background: rgba(17, 9, 34, 0.96); 
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(188, 19, 254, 0.2);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            z-index: 99999; 
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.4s cubic-bezier(0.1, 0.9, 0.2, 1); 
+            text-align: left;
+        }
+
+        /* Когда добавляем класс .open, шторка выезжает ровно к краю экрана */
+        .sidebar-panel.open {
+            right: 0;
+        }
+        .burger-line {
+            width: 22px;
+            height: 2px;
+            background-color: #ffffff;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        /* Выезжающая боковая шторка (Меню профиля) */
+        .sidebar-panel {
+            position: fixed;
+            top: 0;
+            right: -320px; /* По умолчанию полностью спрятана справа */
+            width: 310px;
+            height: 100%;
+            background: rgba(17, 9, 34, 0.96); /* Глубокий темный неоновый фон */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(188, 19, 254, 0.2);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            z-index: 99999; /* Поверх всех элементов сайта */
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            transition: right 0.4s cubic-bezier(0.1, 0.9, 0.2, 1); /* Плавный выезд */
+            text-align: left;
+        }
+
+        /* Когда добавляем класс .open, шторка выезжает */
+        .sidebar-panel.open {
+            right: 0;
+        }
+
+        /* Кнопка закрытия (крестик) */
+        .close-sidebar-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            color: #ff5555;
+            font-size: 20px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        /* Шапка профиля внутри шторки */
+        .sidebar-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 40px;
+            margin-bottom: 25px;
+        }
+        .buyer-avatar-stub {
+            width: 46px;
+            height: 46px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid #bc13fe;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 20px;
+        }
+
+        /* Карточки баланса */
+        .sidebar-stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+        .sidebar-stat-card {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+        }
+        .sidebar-stat-label {
+            display: block;
+            color: #7b7193;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .sidebar-stat-value {
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+        /* Разделы меню */
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+        .sidebar-section-title {
+            margin: 0 0 10px 0;
+            color: #ffffff;
+            font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
       body {
         background: radial-gradient(circle, #2e1f4d 0%, #110922 100%);
         color: #ffffff;
@@ -448,24 +609,181 @@
             box-shadow: 0 5px 20px rgba(188, 19, 254, 0.4);
             transform: translateY(-2px);
         }
+         /* Стиль всплывающего уведомления */
+        .toast-box {
+            position: fixed;
+            bottom: -100px; /* По умолчанию спрятано низко под экраном */
+            left: 50%;
+            transform: translateX(-50%); /* Выравниваем строго по центру экрана */
+            background: rgba(17, 9, 34, 0.9); /* Темный фон */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid #50fa7b; /* Зеленый неоновый ободок */
+            box-shadow: 0 0 20px rgba(80, 250, 123, 0.3);
+            color: #ffffff;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            z-index: 1000000; /* Поверх вообще всего на сайте */
+            transition: bottom 0.4s cubic-bezier(0.1, 0.9, 0.2, 1), opacity 0.3s ease; /* Плавное вылетание */
+            opacity: 0;
+            pointer-events: none; /* Чтобы не мешало кликать, когда спрятано */
+        }
+
+        /* Класс, который JavaScript будет включать для показа */
+        .toast-box.show {
+            bottom: 30px; /* Вылетает снизу экрана */
+            opacity: 1;
+        }
         </style> 
+        
 </head>
 <body>
     <main class="profile_container">
-        <div class="avatar"></div> 
-        <h1 class="username">@Timon_Shop</h1>
-        <p class="bio">Данный сайт создан мной для людей, которые хотят закупиться дешевле чем в моем профиле на Pleerok!</p>
-        <p class="bio">Обуславливается это тем, что тут нет комиссии!Перед покупкой можете задать вопросы в телеграмме @vgywz или договориться о покупке!</p>
-        <p class="bio">Мой профиль на плеерке https://playerok.com/profile/Danil794/products , можете ознакомиться с ним и купить именно там!</p>
-        <div class="links-block">
-            <a href="https://playerok.com/profile/Danil794/products" target="_blank" class="btn link-Playerok">
-               Профиль Playerok
-            </a>
-            <a href="https://t.me/vgywz" target="_blank" class="btn link-Telegram">
-                Телеграм
-            </a>
+         <!-- ☰ ИКОНКА БУРГЕР-МЕНЮ (ТРИ ПОЛОСКИ) -->
+        <div class="burger-menu-btn" onclick="toggleSidebar(true)">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
         </div>
-        <!-- ==================================================== -->
+         <!-- 👑 КРАСИВОЕ НАЗВАНИЕ МАГАЗИНА И АВАТАРКА -->
+        <div class="simple-shop-header" style="text-align: center; margin-bottom: 20px;">
+            <!-- Твоя круглая аватарка -->
+            <img src="./avatar.jpg" alt="Timon Shop Avatar" style="width: 80px; height: 85px; border-radius: 50%; border: 2px solid #bc13fe; box-shadow: 0 0 15px rgba(188, 19, 254, 0.4); object-fit: cover; margin-bottom: 12px;">
+            
+            <!-- Красивое неоновое название -->
+            <h1 style="font-size: 28px; font-weight: 900; color: #ffffff; margin: 0 0 5px 0; text-shadow: 0 0 10px rgba(188, 19, 254, 0.6);">Timon Shop</h1>
+            
+            <!-- Короткое аккуратное описание -->
+            <p style="color: #7b7193; font-size: 13px; margin: 0; font-weight: 600;">Магазин Игр и Ключей Steam</p>
+        </div>
+
+        <!-- 🎴 ВЫЕЗЖАЮЩАЯ БОКОВАЯ ПАНЕЛЬ (ПРОФИЛЬ ПОКУПАТЕЛЯ) -->
+         <!-- 🎴 ОБНОВЛЕННАЯ ВЫЕЗЖАЮЩАЯ БОКОВАЯ ПАНЕЛЬ -->
+            <!-- 🎴 ОБНОВЛЕННАЯ БОКОВАЯ ПАНЕЛЬ С КОРЗИНОЙ ВНУТРИ -->
+        <div id="buyer-sidebar" class="sidebar-panel">
+             <div id="admin-support-panel" style="display: none; flex-direction: column; height: 100%; position: absolute; top: 0; left: 0; width: 100%; background: #110922; padding: 25px; border-radius: 16px; z-index: 1000000;">
+                
+                <!-- Шапка админки -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid #bc13fe; padding-bottom: 10px;">
+                    <div>
+                        <h3 style="margin: 0; color: #bc13fe; font-size: 15px; font-weight: 900;">👑 ПУЛЬТ ЦАРЯ БАТЮШКИ</h3>
+                        <span style="color: #50fa7b; font-size: 10px; font-weight: 700;">РЕЖИМ: НА СВЯЗИ</span>
+                    </div>
+                    <button type="button" onclick="document.getElementById('admin-support-panel').style.display='none';" style="background: none; border: none; color: #ff5555; font-size: 18px; cursor: pointer;">✕</button>
+                </div>
+                
+
+                <!-- Список активных диалогов от покупателей -->
+                <h4 style="margin: 0 0 8px 0; color: #ffffff; font-size: 12px; font-transform: uppercase;">📥 Входящие вопросы:</h4>
+                <div id="admin-chats-list" style="flex: 1; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; padding: 10px; overflow-y: auto; margin-bottom: 15px;">
+                    <div style="color: #7b7193; font-size: 11px; font-style: italic; text-align: center; padding-top: 20px;">Новых сообщений пока нет...</div>
+                </div>
+
+                <!-- Поле ответа покупателю -->
+                <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">
+                    <span id="admin-reply-target" style="display: block; font-size: 11px; color: #7b7193; margin-bottom: 6px;">Кому: не выбрано</span>
+                    <div style="display: flex; gap: 6px;">
+                        <input type="text" id="admin-reply-msg" placeholder="Текст ответа покупателю..." style="flex: 1; padding: 8px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #ffffff; font-size: 12px; outline: none;">
+                        <button type="button" onclick="sendAdminReply()" style="padding: 8px 14px; background: #50fa7b; color: #110922; border: none; border-radius: 6px; font-weight: 800; font-size: 12px; cursor: pointer;">ОТВЕТИТЬ</button>
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            <!-- Кнопка закрытия -->
+            <button class="close-sidebar-btn" onclick="toggleSidebar(false)">✕</button>
+
+            <!-- Шапка профиля покупателя -->
+            <div class="sidebar-profile-header" style="display: flex; flex-direction: column; gap: 12px; margin-top: 40px; margin-bottom: 20px; align-items: flex-start;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="buyer-avatar-stub">👤</div>
+                    <div class="buyer-info">
+                        <h3 id="buyer-number-title" style="margin: 0; color: #7b7193; font-size: 13px; font-weight: 700;">Покупатель #...</h3>
+                        <div id="buyer-display-name" style="color: #ffffff; font-size: 18px; font-weight: 900; margin-top: 2px;">Гость</div>
+                    </div>
+                </div>
+                
+<!-- ЭТОТ БЛОК ВСТАВИТЬ СРАЗУ ПОСЛЕ СПИСКА ЮЗЕРОВ -->
+<div id="replyBox" style="display: none; margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.02); border: 1px solid #bc13fe; border-radius: 12px;">
+    <div>Ответ для: <strong id="activeUser" style="color: #ff79c6;"></strong></div>
+    <textarea id="replyText" placeholder="Напишите ответ..." style="width: 100%; height: 70px; background: rgba(17, 9, 34, 0.8); border: 1px solid #bc13fe; border-radius: 8px; color: white; padding: 10px; box-sizing: border-box; resize: none; outline: none; margin-top: 8px;"></textarea>
+    <button id="sendBtn" style="background: #bc13fe; color: white; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; margin-top: 8px; font-weight: bold; width: 100%;">Отправить</button>
+</div>
+                <!-- Изменение никнейма -->
+                <div style="width: 100%; display: flex; gap: 6px; margin-top: 5px; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.03);">
+                    <input type="text" id="custom-nickname-input" placeholder="Изменить никнейм..." style="flex: 1; padding: 6px 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; color: #ffffff; font-size: 12px; outline: none;">
+                    <button onclick="saveCustomNickname()" style="padding: 6px 12px; background: #50fa7b; border: none; border-radius: 6px; color: #110922; font-weight: 800; font-size: 11px; cursor: pointer;">Сохранить</button>
+                </div>
+            </div>
+
+            <!-- Раздел: Промокод на скидку -->
+            <div class="sidebar-section" style="margin-bottom: 20px;">
+                <h4 class="sidebar-section-title">🎁 Промокод на скидку</h4>
+                <div style="display: flex; gap: 8px;">
+                    <input type="text" id="promo-input" placeholder="Введите код..." style="flex: 1; padding: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: #ffffff; font-size: 13px; outline: none;">
+                    <button type="button" onclick="activatePromo()" style="padding: 10px 14px; background: #bc13fe; border: none; border-radius: 8px; color: #ffffff; font-weight: 700; font-size: 13px; cursor: pointer;">ОК</button>
+                </div>
+                <span id="promo-status-msg" style="display: block; font-size: 11px; margin-top: 5px; font-weight: 600;"></span>
+            </div>
+
+               <!-- ==================================================== -->
+            <!-- 🛒 ВСТРОЕННАЯ УМНАЯ КОРЗИНА (СТАТИЧНАЯ В МЕНЮ) -->
+            <!-- ==================================================== -->
+            <div class="sidebar-section" id="sidebar-cart-section" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(188, 19, 254, 0.15); border-radius: 12px; padding: 12px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
+                    <h4 class="sidebar-section-title" style="margin: 0; font-size: 12px; color: #ffffff;">🛒 ВАША КОРЗИНА</h4>
+                    <button type="button" onclick="clearCart()" style="background: none; border: none; color: #ff5555; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">Очистить</button>
+                </div>
+                
+                <div id="cart-items" style="max-height: 120px; overflow-y: auto; margin-bottom: 10px;">
+                    <div style="color: #7b7193; font-size: 12px; font-style: italic; text-align: center; padding: 10px 0;">Корзина пуста</div>
+                </div> 
+                
+                <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 800; color: #ffffff; margin-bottom: 12px;">
+                    <span>Итого к оплате:</span>
+                    <span id="cart-total-price">0 ₽</span>
+                </div>
+                
+                <form action="https://lava.ru" method="get" target="_blank" id="lava-cart-form">
+                    <input type="hidden" name="merchantId" value="СЮДА_ВСТАВЬ_ID_ПРОЕКТА">
+                    <input type="hidden" name="currency" value="RUB">
+                    <input type="hidden" id="lava-cart-amount" name="amount" value="0">
+                    <input type="hidden" id="lava-cart-comment" name="comment" value="">
+                    <button type="submit" class="checkout-btn" style="width: 100%; padding: 10px; font-size: 13px; border-radius: 8px; background: linear-gradient(135deg, #bc13fe 0%, #7b13fe 100%); color: #ffffff; border: none; font-weight: 700; cursor: pointer;">Оформить заказ в Lava</button>
+                </form>
+            </div>
+
+            <!-- Вкладка: История заказов -->
+            <div class="sidebar-section" style="margin-bottom: 20px;">
+                <details style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 10px; padding: 10px; cursor: pointer;">
+                    <summary class="sidebar-section-title" style="color: #ffffff; margin: 0; outline: none; font-size: 12px;">📦 Вкладка: История заказов</summary>
+                    <div id="sidebar-orders-list" style="color: #7b7193; font-size: 11px; font-style: italic; text-align: center; padding-top: 10px; cursor: default;">
+                        Вы еще не совершали покупок.
+                    </div>
+                </details>
+            </div>
+
+             <!-- ==================================================== -->
+            <!-- 🎧 ОФИЦИАЛЬНАЯ СЛУЖБА ПОДДЕРЖКИ В TELEGRAM БОТЕ     -->
+            <!-- ==================================================== -->
+            <div class="sidebar-section support-section" style="margin-top: auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05); width: 100%;">
+                <h4 class="sidebar-section-title" style="font-size: 11px; color: #ffffff; margin-bottom: 5px;">🎧 Служба поддержки маркетплейса</h4>
+                <p style="color: #a9a1bc; font-size: 12px; margin: 0 0 12px 0; line-height: 1.5;">Возникли проблемы с оплатой Lava, активацией промокода или выдачей товара? Наш официальный бот поддержки на связи 24/7!</p>
+                
+                <!-- 👇 ВСТАВЬ СЮДА ССЫЛКУ НА СВОЕГО БОТА ВМЕСТО СЛОВА ИМЯ_ТВОЕГО_БОТА 👇 -->
+                <a href="t.me/TimonShopPodderjka_bot" target="_blank" class="btn-support-bot" style="display: block; width: 100%; padding: 14px; background: linear-gradient(135deg, #24b44b 0%, #1d913c 100%); color: #ffffff; text-align: center; text-decoration: none; font-weight: 800; font-size: 14px; border-radius: 10px; box-shadow: 0 4px 15px rgba(36,180,75,0.3); border: none; cursor: pointer; transition: all 0.3s ease;">
+                    🤖 Написать в Telegram-бот
+                </a>
+            </div>
+
+        </div>
+
+       
+
+        </div> <!-- КОНЕЦ ВСЕЙ БОКОВОЙ ШТОРКИ buyer-sidebar -->
         <!-- ГЛАВНЫЙ БЛОК ВИТРИНЫ (ПОИСК, КАТЕГОРИИ И ТОВАРЫ) -->
         <!-- ==================================================== -->
         <div class="tabs-container">
@@ -694,7 +1012,7 @@
 
 </div> <!-- Конец коробки Рандома -->
  <!-- 🛒 УМНОЕ ОКНО КОРЗИНЫ (ПО УМОЛЧАНИЮ СКРЫТО) -->
-        <div id="cart-container" class="cart-box">
+        
             <!-- 👇 ШАПКА КОРЗИНЫ С КНОПКОЙ ОТМЕНЫ ВСЕГО 👇 -->
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h3 style="color: #ffffff; font-size: 16px; margin: 0;">🛒 Ваш заказ:</h3>
@@ -726,13 +1044,58 @@
             </form>
         </div>
     </div>
+    <div class="legal-info" style="margin-top: 25px; font-size: 11px; color: #7b7193; text-align: center; line-height: 1.6;">
+    <p>⚡ Все торговые марки, названия игр и dlc принадлежат их правообладателям. Наш магазин является независимым маркетплейсом.</p>
+    <p>📩 Контакты поддержки: <a href="https://t.me" target="_blank" style="color: #bc13fe;">@vgywz (Telegram)</a> | Время работы: с 10:00 до 22:00 по МСК</p>
+    <p>⚖️ <a href="#privacy" style="color: #50fa7b; text-decoration: underline;">Политика конфиденциальности</a> | <a href="#refund" style="color: #50fa7b; text-decoration: underline;">Условия возврата и оферта</a></p>
+</div>
+ <!-- ==================================================== -->
+        <div class="legal-container" style="margin-top: 35px; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: left;">
+            
+            <p style="color: #7b7193; font-size: 11px; text-align: center; line-height: 1.5; margin-bottom: 15px;">
+                ⚡ Все торговые марки, названия игр, логотипы и внутриигровые дополнения (DLC) принадлежат их официальным правообладателям. Магазин Timon Shop является независимым маркетплейсом.
+            </p>
+
+            <!-- 📜 СПОЙЛЕР 1: ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ -->
+            <details style="margin-bottom: 10px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; cursor: pointer;">
+                <summary style="color: #50fa7b; font-size: 13px; font-weight: 700; outline: none;">🔒 Политика конфиденциальности (Нажми, чтобы открыть)</summary>
+                <div style="color: #a9a1bc; font-size: 12px; line-height: 1.6; margin-top: 10px; cursor: default;">
+                    <p><strong>1. Общие положения:</strong> Настоящая политика определяет порядок обработки персональных данных пользователей на сайте магазина Timon Shop.</p>
+                    <p><strong>2. Сбор данных:</strong> Сайт не собирает и не хранит данные банковских карт пользователей. Все платежные операции проходят на защищенной стороне серверов сертифицированного шлюза Lava.ru.</p>
+                    <p><strong>3. Использование данных:</strong> Предоставляемые пользователем данные (ссылка на профиль Steam, почта или никнейм Telegram) используются исключительно для ручной или автоматической доставки оплаченного игрового товара (Steam Gift / Ключи активации).</p>
+                    <p><strong>4. Безопасность:</strong> Мы обязуемся не передавать полученные контактные данные пользователей третьим лицам.</p>
+                </div>
+            </details>
+
+            <!-- 📜 СПОЙЛЕР 2: УСЛОВИЯ ВОЗВРАТА И ОФЕРТА -->
+            <details style="margin-bottom: 15px; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03); border-radius: 8px; padding: 10px; cursor: pointer;">
+                <summary style="color: #50fa7b; font-size: 13px; font-weight: 700; outline: none;">⚖️ Условия возврата и Публичная оферта (Нажми, чтобы открыть)</summary>
+                <div style="color: #a9a1bc; font-size: 12px; line-height: 1.6; margin-top: 10px; cursor: default;">
+                    <p><strong>1. Предмет соглашения:</strong> Продавец обязуется передать Покупателю цифровой товар (игру в формате Steam Gift, DLC или лицензионный ключ активации) после подтверждения 100% оплаты.</p>
+                    <p><strong>2. Порядок ручной выдачи:</strong> Для получения товаров категорий Steam Gift (Сама игра DbD, Rust) и DLC Покупатель обязан после оплаты связаться с поддержкой по контактам, указанным на сайте, и предоставить ссылку на свой Steam-профиль для добавления в друзья и отправки подарка. Время ручной доставки составляет от 5 минут до 24 часов.</p>
+                    <p><strong>3. Правила и условия возврата денежных средств:</strong></p>
+                    <ul>
+                        <li>Цифровые товары надлежащего качества после их активации или отправки на аккаунт Покупателя возврату и обмену не подлежат (согласно ст. 26.1 Закона РФ «О защите прав потребителей» в отношении цифрового контента).</li>
+                        <li>Полный возврат денежных средств возможен строго ДО момента отправки товара Покупателю, если Продавец по техническим причинам не может выполнить заказ.</li>
+                        <li>Если Покупатель совершил ошибку (указал не тот регион аккаунта, не проверил системные требования или купил товар случайно) ДО отправки цифрового кода, возврат осуществляется с вычетом комиссии платежной системы (15%).</li>
+                    </ul>
+                    <p><strong>4. Разрешение споров:</strong> При возникновении любых спорных ситуаций Покупатель должен обратиться в поддержку по адресу Telegram: @vgywz. Мы гарантируем решение любого вопроса в пользу клиента.</p>
+                </div>
+            </details>
+
+            <!-- Контакты -->
+            <p style="color: #7b7193; font-size: 12px; text-align: center; margin: 0;">
+                📩 Поддержка клиентов: <a href="https://t.me" target="_blank" style="color: #bc13fe; font-weight: 700; text-decoration: none;">@vgywz (Telegram)</a>
+            </p>
+        </div>
         </main>
+        
         
 
         
 <script>
      // ====================================================
-        // 1. УПРАВЛЕНИЕ КАТЕГОРИЯМИ (ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК)
+        // 1. УПРАВЛЕНИЕ КАТЕГОРИЯМИ И ШТОРКАМИ
         // ====================================================
         function openTab(tabId) {
             let contents = document.querySelectorAll('.tab-content');
@@ -741,41 +1104,54 @@
             let buttons = document.querySelectorAll('.tab-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
 
-            document.getElementById(tabId).classList.add('active');
-            if (event && event.currentTarget) {
+            let targetTab = document.getElementById(tabId);
+            if (targetTab) targetTab.classList.add('active');
+            
+            if (window.event && window.event.currentTarget) {
+                window.event.currentTarget.classList.add('active');
+            } else if (typeof event !== 'undefined' && event.currentTarget) {
                 event.currentTarget.classList.add('active');
             }
             
-            document.getElementById('search-input').value = '';
+            let searchInput = document.getElementById('search-input');
+            if (searchInput) searchInput.value = '';
             searchProducts(); 
         }
 
+        function toggleSidebar(shouldOpen) {
+            let sidebar = document.getElementById('buyer-sidebar');
+            if (sidebar) {
+                if (shouldOpen) sidebar.classList.add('open');
+                else sidebar.classList.remove('open');
+            }
+        }
+
         // ====================================================
-        // 2. ЖИВОЙ ПОИСК ПО ВСЕМ ТОВАРАМ
+        // 2. ЖИВОЙ ПОИСК ТОВАРОВ
         // ====================================================
         function searchProducts() {
-            let filter = document.getElementById('search-input').value.toLowerCase().trim();
+            let searchInput = document.getElementById('search-input');
+            if (!searchInput) return;
+            let filter = searchInput.value.toLowerCase().trim();
             let cards = document.querySelectorAll('.product-card');
 
             cards.forEach(card => {
                 let titleElement = card.querySelector('.product-title');
                 if (titleElement) {
                     let titleText = titleElement.innerText.toLowerCase();
-                    if (filter === "") {
-                        card.style.display = 'flex';
-                    } else if (titleText.includes(filter)) {
-                        card.style.display = 'flex';
-                    } else {
-                        card.style.display = 'none';
-                    }
+                    if (filter === "") card.style.display = 'flex';
+                    else if (titleText.includes(filter)) card.style.display = 'flex';
+                    else card.style.display = 'none';
                 }
             });
         }
 
         // ====================================================
-        // 3. РАБОЧИЕ МОЗГИ ДЛЯ КОРЗИНЫ
+        // 3. КОРЗИНА И ПРОМОКОДЫ
         // ====================================================
-        let cart = [];
+        let cart = []; 
+        let currentDiscountPercent = 0; 
+        let isTimonPromoBurned = false; 
 
         function addToCart(name, price) {
             cart.push({ name: name, price: price });
@@ -792,20 +1168,65 @@
             updateCartUI();
         }
 
+        function activatePromo() {
+            let input = document.getElementById('promo-input');
+            let msg = document.getElementById('promo-status-msg');
+            if (!input || !msg) return;
+            
+            let originalCode = input.value.trim();
+
+            // 👑 ВХОД ДЛЯ АДМИНА
+            if (originalCode === "Db23a1a2z++") {
+                let adminPanel = document.getElementById('admin-support-panel');
+                let buyerContent = document.getElementById('buyer-normal-content');
+                if (adminPanel) {
+                    if (buyerContent) buyerContent.style.display = 'none';
+                    adminPanel.style.display = 'flex'; 
+                    msg.style.color = "#50fa7b";
+                    msg.innerText = "🔑 Пульт Царя Батюшки открыт.";
+                    input.value = "";
+                    loadAdminChats(); 
+                }
+                return;
+            }
+
+            let upperCode = originalCode.toUpperCase();
+
+            if (upperCode === "TIMON") {
+                if (isTimonPromoBurned === true) {
+                    msg.style.color = "#ff5555";
+                    msg.innerText = "❌ Этот промокод уже сгорел!";
+                    input.value = "";
+                    return;
+                }
+                currentDiscountPercent = 10; 
+                isTimonPromoBurned = true;   
+                msg.style.color = "#50fa7b";
+                msg.innerText = "🎉 Скидка 10% применена.";
+                input.value = "";
+                updateCartUI(); 
+            } else if (originalCode === "") {
+                msg.style.color = "#ff5555";
+                msg.innerText = "⚠ Введите промокод!";
+            } else {
+                msg.style.color = "#ff5555";
+                msg.innerText = "❌ Неверный промокод!";
+            }
+        }
+
         function updateCartUI() {
             let cartItemsDiv = document.getElementById('cart-items');
             let totalPriceSpan = document.getElementById('cart-total-price');
-            let cartContainer = document.getElementById('cart-container');
 
-            // Если корзина пустая — полностью скрываем её с экрана
+            if (!cartItemsDiv || !totalPriceSpan) return;
+
             if (cart.length === 0) {
-                cartContainer.style.display = 'none';
+                cartItemsDiv.innerHTML = '<div style="color: #7b7193; font-size: 12px; font-style: italic; text-align: center; padding: 10px 0;">Корзина пуста</div>';
+                totalPriceSpan.innerText = '0 ₽';
                 return;
-            } else {
-                // Если товары есть — принудительно показываем на экране block!
-                cartContainer.style.display = 'block';
             }
 
+            toggleSidebar(true);
             cartItemsDiv.innerHTML = '';
             let total = 0;
             let itemsNames = [];
@@ -813,23 +1234,182 @@
             cart.forEach((item, index) => {
                 total += item.price;
                 itemsNames.push(item.name);
-
                 cartItemsDiv.innerHTML += `
-                    <div class="cart-item-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px dashed rgba(255,255,255,0.05); padding-bottom: 6px;">
-                        <span style="color: #ffffff; font-size: 14px;">• ${item.name} (${item.price} ₽)</span>
-                        <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ff5555; font-weight: bold; cursor: pointer; font-size: 14px; padding: 0 5px;">❌</button>
-                    </div>
-                `;
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <span style="color: #ffffff; font-size: 12px;">• ${item.name} (${item.price} ₽)</span>
+                        <button onclick="removeFromCart(${index})" style="background: none; border: none; color: #ff5555; cursor: pointer;">❌</button>
+                    </div>`;
             });
 
-            totalPriceSpan.innerText = total + ' ₽';
+            let discountAmount = (total * currentDiscountPercent) / 100;
+            let maxDiscount = discountAmount;
+
+            if (currentDiscountPercent > 0) {
+                if (total <= 500) maxDiscount = 50;
+                else if (total <= 1000) maxDiscount = 100;
+                else if (total <= 10000) maxDiscount = 1000;
+                if (discountAmount > maxDiscount) discountAmount = maxDiscount;
+            }
+
+            let finalTotal = total - discountAmount;
+            totalPriceSpan.innerText = finalTotal + ' ₽';
             
-            let amountInput = document.getElementById('lava-cart-amount');
-            let commentInput = document.getElementById('lava-cart-comment');
-            
-            if (amountInput) amountInput.value = total;
-            if (commentInput) commentInput.value = "Заказ: " + itemsNames.join(', ');
+            let lavaAmount = document.getElementById('lava-cart-amount');
+            let lavaComment = document.getElementById('lava-cart-comment');
+            if (lavaAmount) lavaAmount.value = finalTotal;
+            if (lavaComment) lavaComment.value = "Заказ: " + itemsNames.join(', ');
         }
+
+        // ====================================================
+        // 4. ПРОФИЛИ И ИСПРАВЛЕННЫЙ ЖИВОЙ ЧАТ
+        // ====================================================
+        let currentAdminSelectedUser = ""; 
+
+        function initBuyerProfile() {
+            let localNumber = localStorage.getItem('timon_buyer_id');
+            let localNickname = localStorage.getItem('timon_buyer_name');
+
+            if (!localNumber) {
+                localNumber = Math.floor(Math.random() * (9999 - 100 + 1)) + 100;
+                localStorage.setItem('timon_buyer_id', localNumber);
+            }
+            let numTitle = document.getElementById('buyer-number-title');
+            if (numTitle) numTitle.innerText = "Покупатель #" + localNumber;
+
+            let nameDisplay = document.getElementById('buyer-display-name');
+            if (nameDisplay) {
+                nameDisplay.innerText = localNickname ? localNickname : "Гость #" + localNumber;
+            }
+        }
+
+        function saveCustomNickname() {
+            let input = document.getElementById('custom-nickname-input');
+            let nameDisplay = document.getElementById('buyer-display-name');
+            if (!input || !nameDisplay) return;
+            let newName = input.value.trim();
+            if (newName !== "") {
+                localStorage.setItem('timon_buyer_name', newName);
+                nameDisplay.innerText = newName;
+                showToast("🎉 Никнейм успешно изменен!");
+            }
+        }
+
+        function showToast(message) {
+            let toast = document.getElementById('toast-notification');
+            if (!toast) return;
+            toast.innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        function toggleWebChat() {
+            let chat = document.getElementById('live-web-chat');
+            if (chat) {
+                chat.style.display = (chat.style.display === 'block') ? 'none' : 'block';
+                if (chat.style.display === 'block') renderUserChatScreen();
+            }
+        }
+
+        function sendSupportMessage() {
+            let input = document.getElementById('chat-user-msg');
+            if (!input) return;
+            let text = input.value.trim();
+            if (text === "") return;
+            
+            let buyerId = localStorage.getItem('timon_buyer_id') || "777";
+            let history = JSON.parse(localStorage.getItem("chat_history_" + buyerId)) || [];
+            
+            history.push({ sender: 'user', text: text });
+            localStorage.setItem("chat_history_" + buyerId, JSON.stringify(history));
+
+            let activeUsers = JSON.parse(localStorage.getItem("timon_active_chats_list")) || [];
+            if (!activeUsers.includes(buyerId)) {
+                activeUsers.push(buyerId);
+                localStorage.setItem("timon_active_chats_list", JSON.stringify(activeUsers));
+            }
+            
+            renderUserChatScreen();
+            input.value = "";
+        }
+
+        function renderUserChatScreen() {
+            let box = document.getElementById('chat-messages-box');
+            if (!box) return;
+            let buyerId = localStorage.getItem('timon_buyer_id') || "777";
+            let history = JSON.parse(localStorage.getItem("chat_history_" + buyerId)) || [];
+            
+            box.innerHTML = "";
+            if (history.length > 0) {
+                history.forEach(msg => {
+                    let isUser = msg.sender === 'user';
+                    let bg = isUser ? 'align-self: flex-end; background: #bc13fe; color: #ffffff;' : 'align-self: flex-start; background: #50fa7b; color: #110922;';
+                    
+                    // 👇 ИСПРАВЛЕНО: ТЕГ ОБЕРНУТ В КОСЫЕ КАВЫЧКИ 👇
+                    box.innerHTML += `
+                        <div style="${bg} padding: 6px 12px; border-radius: 8px; max-width: 80%; font-size: 11px; margin-bottom: 4px;">
+                            <strong>${isUser ? 'Вы' : 'Царь'}:</strong> ${msg.text}
+                        </div>
+                    `;
+                });
+            } else {
+                box.innerHTML = '<span>Напишите что-нибудь...</span>';
+            }
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function loadAdminChats() {
+            let list = document.getElementById('admin-chats-list');
+            let targetTitle = document.getElementById('admin-reply-target');
+            let buyerId = localStorage.getItem('timon_buyer_id') || "777";
+            
+            currentAdminSelectedUser = buyerId;
+            if (targetTitle) targetTitle.innerText = "💬 Диалог: Покупатель #" + buyerId;
+            if (!list) return;
+            
+            let history = JSON.parse(localStorage.getItem("chat_history_" + buyerId)) || [];
+            list.innerHTML = "";
+            
+            if (history.length > 0) {
+                history.forEach(msg => {
+                    let isUser = msg.sender === 'user';
+                    let color = isUser ? 'color: #bc13fe;' : 'color: #50fa7b;';
+                    
+                    // 👇 ИСПРАВЛЕНО: ТЕГ ОБЕРНУТ В КОСЫЕ КАВЫЧКИ 👇
+                    list.innerHTML += `
+                        <div style="margin-bottom: 4px; color: #ffffff;">
+                            <span style="${color} font-weight: bold;">${isUser ? 'Юзер' : 'Вы'}:</span> ${msg.text}
+                        </div>
+                    `;
+                });
+            } else {
+                list.innerHTML = '<div style="color: #7b7193; font-size: 11px; font-style: italic; text-align: center; padding-top: 20px;">История пуста.</div>';
+            }
+            list.scrollTop = list.scrollHeight;
+        }
+
+        function sendAdminReply() {
+            let input = document.getElementById('admin-reply-msg');
+            if (!input || currentAdminSelectedUser === "") return;
+            
+            let text = input.value.trim();
+            if (text === "") return;
+            
+            let history = JSON.parse(localStorage.getItem("chat_history_" + currentAdminSelectedUser)) || [];
+            history.push({ sender: 'admin', text: text });
+            localStorage.setItem("chat_history_" + currentAdminSelectedUser, JSON.stringify(history));
+            
+            loadAdminChats();
+            input.value = "";
+            showToast("👑 Ответ отправлен!");
+        }
+
+        window.addEventListener('DOMContentLoaded', initBuyerProfile);
+    </script>
+     <!-- Тег скрипта красиво закрывается -->
+</body> <!-- Тег тела красиво закрывается -->
+</html> <!-- Конец файла -->
 </script>
+
+</body> <!-- Вот этот закрывающий тег должен быть строго под скриптом -->
 </body>
 </html>
