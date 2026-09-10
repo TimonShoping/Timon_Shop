@@ -734,27 +734,23 @@
                <!-- ==================================================== -->
             <!-- 🛒 ВСТРОЕННАЯ УМНАЯ КОРЗИНА (СТАТИЧНАЯ В МЕНЮ) -->
             <!-- ==================================================== -->
-            <div class="sidebar-section" id="sidebar-cart-section" style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(188, 19, 254, 0.15); border-radius: 12px; padding: 12px; margin-bottom: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 6px;">
-                    <h4 class="sidebar-section-title" style="margin: 0; font-size: 12px; color: #ffffff;">🛒 ВАША КОРЗИНА</h4>
-                    <button type="button" onclick="clearCart()" style="background: none; border: none; color: #ff5555; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">Очистить</button>
-                </div>
-                
-                <div id="cart-items" style="max-height: 120px; overflow-y: auto; margin-bottom: 10px;">
-                    <div style="color: #7b7193; font-size: 12px; font-style: italic; text-align: center; padding: 10px 0;">Корзина пуста</div>
-                </div> 
-                
-                <div style="display: flex; justify-content: space-between; font-size: 14px; font-weight: 800; color: #ffffff; margin-bottom: 12px;">
-                    <span>Итого к оплате:</span>
-                    <span id="cart-total-price">0 ₽</span>
-                </div>
-                
-                <form action="https://lava.ru" method="get" target="_blank" id="lava-cart-form">
-                    <input type="hidden" name="merchantId" value="СЮДА_ВСТАВЬ_ID_ПРОЕКТА">
-                    <input type="hidden" name="currency" value="RUB">
+           <!-- ТЕПЕРЬ ФОРМА АДАПТИРОВАНА ПОД ЛЮБЫЕ ПЛАТЁЖКИ -->
+                 <form action="#" method="get" target="_blank" id="lava-cart-form" onsubmit="handleCzarPayment(event)">
+                    
+                    <!-- Компактная плашка СБП для модераторов -->
+                    <div style="margin-bottom: 12px; background: rgba(80, 250, 123, 0.05); border: 1px solid rgba(80, 250, 123, 0.2); padding: 10px; border-radius: 8px; text-align: center;">
+                        <span style="color: #50fa7b; font-size: 13px; font-weight: 800; display: block; letter-spacing: 0.5px;">📲 СПОСОБ ОПЛАТЫ: СБП</span>
+                        <span style="color: #a9a1bc; font-size: 11px; margin-top: 2px; display: block;">Быстрая оплата по QR-коду или через приложение банка</span>
+                    </div>
+
+                    <!-- Скрытые технические поля для хранения сумм -->
                     <input type="hidden" id="lava-cart-amount" name="amount" value="0">
                     <input type="hidden" id="lava-cart-comment" name="comment" value="">
-                    <button type="submit" class="checkout-btn" style="width: 100%; padding: 10px; font-size: 13px; border-radius: 8px; background: linear-gradient(135deg, #bc13fe 0%, #7b13fe 100%); color: #ffffff; border: none; font-weight: 700; cursor: pointer;">Оформить заказ в Lava</button>
+                    
+                    <!-- 🔥 КРАСИВАЯ КНОПКА ОПЛАТЫ СБП -->
+                    <button type="submit" class="checkout-btn" style="width: 100%; padding: 12px; font-size: 13px; border-radius: 8px; background: linear-gradient(135deg, #50fa7b 0%, #24b44b 100%); color: #110922; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 4px 12px rgba(36,180,75,0.2);">
+                        💳 Оплатить заказ через СБП
+                    </button>
                 </form>
             </div>
 
@@ -1395,6 +1391,20 @@
             loadAdminChats();
             input.value = "";
             showToast("👑 Ответ отправлен!");
+        }
+         // Логика проверки корзины перед оплатой СБП
+        function handleCzarPayment(event) {
+            let finalAmount = document.getElementById('lava-cart-amount').value;
+            let form = document.getElementById('lava-cart-form');
+            
+            if (finalAmount == 0 || cart.length === 0) {
+                event.preventDefault();
+                alert("⚠ Ваша корзина пуста! Добавьте DLC или игры для оплаты.");
+                return;
+            }
+
+            // Сюда автоматически подставится ссылка на шлюз СБП после активации в кассе
+            form.action = "https://enot.io"; 
         }
 
         window.addEventListener('DOMContentLoaded', initBuyerProfile);
